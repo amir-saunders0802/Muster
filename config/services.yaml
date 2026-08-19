@@ -1,0 +1,30 @@
+services:
+  - name: payments-api
+    owner: payments-team
+    repo: github.com/example/payments-api
+    environment: production
+    tier: 1
+
+  - name: orders-api
+    owner: commerce-team
+    repo: github.com/example/orders-api
+    environment: production
+    tier: 1
+
+  - name: notifications-api
+    owner: platform-team
+    repo: github.com/example/notifications-api
+    environment: staging
+    tier: 2
+
+  - name: reporting-api
+    owner: analytics-team
+    repo: github.com/example/reporting-api
+    environment: production
+    tier: 2
+
+  - name: internal-tools
+    owner: developer-experience
+    repo: github.com/example/internal-tools
+    environment: development
+    tier: 3
