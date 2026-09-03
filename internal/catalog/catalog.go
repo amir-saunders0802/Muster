@@ -6,8 +6,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Service defines what one service looks like.
-// The tags map YAML/JSON fields to the Go fields.
+// Service contains the ownership, repository, environment, and importance
+// information recorded for one service in the catalog.
 type Service struct {
 	Name        string `yaml:"name" json:"name"`
 	Owner       string `yaml:"owner" json:"owner"`
@@ -16,30 +16,24 @@ type Service struct {
 	Tier        int    `yaml:"tier" json:"tier"`
 }
 
-// Catalog holds the list of all services.
+// Catalog is the top-level shape expected in the services YAML file.
 type Catalog struct {
 	Services []Service `yaml:"services" json:"services"`
 }
 
-// Load reads the YAML file and returns a Catalog or an error.
+// Load reads a YAML catalog from path and converts it into the application's
+// service data. It returns an error when the file cannot be read or parsed.
 func Load(path string) (Catalog, error) {
-
-	// Read the file. data = file contents, err = any error.
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return Catalog{}, err
 	}
 
-	// Create an empty Catalog to put the YAML data into.
 	var catalog Catalog
 
-	// Convert YAML data into catalog.
-	// &catalog lets Unmarshal modify/fill the actual catalog.
-	// If it fails, err will NOT be nil.
 	if err := yaml.Unmarshal(data, &catalog); err != nil {
 		return Catalog{}, err
 	}
 
-	// Success: return the populated catalog and no error.
 	return catalog, nil
 }

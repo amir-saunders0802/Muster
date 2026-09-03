@@ -1,6 +1,5 @@
 package api
 
-// Import packages needed for HTTP testing.
 import (
 	"net/http"
 	"net/http/httptest"
@@ -10,10 +9,12 @@ import (
 	"github.com/amir-saunders0802/Muster/internal/catalog"
 )
 
-// TestHandlers tests all of our HTTP endpoints.
+// TestHandlers checks the expected response for each API route, including the
+// error returned when a requested service does not exist.
 func TestHandlers(t *testing.T) {
 
-	// Create a fake Catalog with one service for testing.
+	// Use a small in-memory catalog so the handler tests do not depend on the
+	// production configuration file.
 	c := catalog.Catalog{
 		Services: []catalog.Service{
 			{
@@ -26,23 +27,20 @@ func TestHandlers(t *testing.T) {
 		},
 	}
 
-	// Put the test Catalog into a Handler.
 	h := NewHandler(c)
 
-	// Create a test HTTP router.
 	mux := http.NewServeMux()
-
-	// Connect each URL to its handler.
 	mux.HandleFunc("GET /healthz", Healthz)
 	mux.HandleFunc("GET /services", h.Services)
 	mux.HandleFunc("GET /services/{name}", h.ServiceByName)
 
-	// Create a table/list of test cases.
+	// Keep the route checks together so each endpoint has a clear expected
+	// status code and response value.
 	tests := []struct {
-		name       string // Name of the test.
-		path       string // URL we want to test.
-		wantStatus int    // HTTP status we expect.
-		wantBody   string // Text we expect in the response.
+		name       string
+		path       string
+		wantStatus int
+		wantBody   string
 	}{
 		{
 			name:       "health check",
@@ -70,27 +68,17 @@ func TestHandlers(t *testing.T) {
 		},
 	}
 
-	// Loop through every test case.
 	for _, tt := range tests {
-
-		// Run each test using its name.
 		t.Run(tt.name, func(t *testing.T) {
-
-			// Create a fake GET request using the test path.
 			req := httptest.NewRequest(http.MethodGet, tt.path, nil)
-
-			// Create something to capture the HTTP response.
 			rec := httptest.NewRecorder()
 
-			// Send the request through our router.
 			mux.ServeHTTP(rec, req)
 
-			// Fail if the status code is not what we expected.
 			if rec.Code != tt.wantStatus {
 				t.Errorf("expected status %d, got %d", tt.wantStatus, rec.Code)
 			}
 
-			// Fail if the response body doesn't contain what we expected.
 			if !strings.Contains(rec.Body.String(), tt.wantBody) {
 				t.Errorf(
 					"expected body to contain %q, got %q",

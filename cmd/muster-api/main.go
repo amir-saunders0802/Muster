@@ -10,28 +10,29 @@ import (
 )
 
 func main() {
-	// Load the YAML catalog.
+	// Load the service information before accepting requests so every endpoint
+	// can use the same catalog.
 	c, err := catalog.Load("config/services.yaml")
 	if err != nil {
+		// The API cannot provide useful responses without its catalog, so startup
+		// stops instead of running with incomplete data.
 		slog.Error("failed to load catalog", "error", err)
 		os.Exit(1)
 	}
 
-	// Create a handler that contains the loaded catalog.
+	// Give the loaded catalog to the handlers that serve API requests.
 	h := api.NewHandler(c)
 
-	// Create the HTTP router.
+	// Register the public routes and connect each one to the code that handles it.
 	mux := http.NewServeMux()
-
-	// Connect URLs to handler functions.
 	mux.HandleFunc("GET /healthz", api.Healthz)
 	mux.HandleFunc("GET /services", h.Services)
 	mux.HandleFunc("GET /services/{name}", h.ServiceByName)
 
-	// Log that the server is starting.
 	slog.Info("server starting", "port", 8080)
 
-	// Start the server and listen on port 8080.
+	// Keep the API listening for requests until the server stops or encounters
+	// an error that prevents it from continuing.
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		slog.Error("server stopped", "error", err)
 		os.Exit(1)
