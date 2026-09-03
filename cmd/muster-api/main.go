@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/amir-saunders0802/Muster/internal/api"
 	"github.com/amir-saunders0802/Muster/internal/catalog"
@@ -29,11 +30,18 @@ func main() {
 	mux.HandleFunc("GET /services", h.Services)
 	mux.HandleFunc("GET /services/{name}", h.ServiceByName)
 
-	slog.Info("server starting", "port", 8080)
+	server := &http.Server{
+		Addr:         ":8080",
+		Handler:      mux,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
 
-	// Keep the API listening for requests until the server stops or encounters
-	// an error that prevents it from continuing.
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	slog.Info("server starting", "port", server.Addr)
+
+	// Timeouts prevent slow or stuck clients from holding connections open
+	// indefinitely while the API waits to read or write data.
+	if err := server.ListenAndServe(); err != nil {
 		slog.Error("server stopped", "error", err)
 		os.Exit(1)
 	}
