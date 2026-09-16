@@ -26,11 +26,12 @@ type Catalog struct {
 func Load(path string) (Catalog, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
+	// If loading fails, return an empty Catalog{} and the error.
 		return Catalog{}, err
 	}
 
 	var catalog Catalog
-
+    // Convert the YAML data into our Catalog; return an error if it fails.
 	if err := yaml.Unmarshal(data, &catalog); err != nil {
 		return Catalog{}, err
 	}
