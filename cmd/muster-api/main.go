@@ -26,10 +26,13 @@ func main() {
 
 	// Register the public routes and connect each one to the code that handles it.
 	mux := http.NewServeMux()
+	// The router matches the GET path to a handler and runs it.
+    // Example: curl localhost:8080/healthz → GET /healthz → api.Healthz
 	mux.HandleFunc("GET /healthz", api.Healthz)
 	mux.HandleFunc("GET /services", h.Services)
 	mux.HandleFunc("GET /services/{name}", h.ServiceByName)
-
+	
+    // Configure the server on port 8080, using mux to connect requests to handler function
 	server := &http.Server{
 		Addr:         ":8080",
 		Handler:      mux,
