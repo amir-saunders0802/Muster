@@ -58,7 +58,7 @@ Build the image:
 docker build -t muster:local .
 ```
 
-Run the container:
+Run the container locally:
 
 ```bash
 docker run --rm -p 8080:8080 muster:local
