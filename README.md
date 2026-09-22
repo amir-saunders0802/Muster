@@ -64,6 +64,12 @@ Run the container:
 docker run --rm -p 8080:8080 muster:local
 ```
 
+For Kind, load the local image before applying the manifests:
+
+```bash
+kind load docker-image muster:local --name <your-cluster-name>
+```
+
 The application is built using a multi-stage Docker build. The final runtime
 image uses Distroless, contains no shell or Go build tooling, and runs as a
 non-root user.
