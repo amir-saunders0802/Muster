@@ -33,7 +33,7 @@ curl http://localhost:8080/healthz
 Returns:
 
 ```json
-{"status":"ok"}
+{ "status": "ok" }
 ```
 
 ### List all services
@@ -55,13 +55,13 @@ If the service does not exist, the API returns a `404` response.
 Build the image:
 
 ```bash
-docker build -t muster-api .
+docker build -t muster:local .
 ```
 
 Run the container:
 
 ```bash
-docker run --rm -p 8080:8080 muster-api
+docker run --rm -p 8080:8080 muster:local
 ```
 
 The application is built using a multi-stage Docker build. The final runtime
