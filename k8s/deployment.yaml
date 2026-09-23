@@ -18,6 +18,9 @@ spec:
         - name: muster-api
           image: muster:local
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
           resources:
             requests:
               cpu: "100m"
