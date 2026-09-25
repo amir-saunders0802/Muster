@@ -74,6 +74,16 @@ The application is built using a multi-stage Docker build. The final runtime
 image uses Distroless, contains no shell or Go build tooling, and runs as a
 non-root user.
 
+## Kubernetes note
+
+<!-- subPath mounts do not refresh in place, and the app loads the catalog once at startup. If the ConfigMap is changed, the pod keeps serving the old catalog until it is restarted. -->
+
+When the catalog ConfigMap changes, restart the deployment so the new catalog is loaded:
+
+```bash
+kubectl rollout restart deployment/muster-api
+```
+
 ## Tests
 
 Run all tests with:
