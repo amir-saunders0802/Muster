@@ -17,14 +17,15 @@ RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /muster-api 
 
 
 # Start a small Distroless image where the compiled Linux executable will be stored and run.
+# Muster will be copied into it from the builder stage next.
 # Distroless contains the application runtime without a shell or package
-# manager, reducing the final image size and attack surface.
 FROM gcr.io/distroless/static-debian12:nonroot
 
 WORKDIR /app
 
-# The API loads this file using the relative path config/services.yaml.
+# Copy the compiled Muster executable from the builder stage into the Distroless Debian image.
 COPY --from=builder /muster-api /app/muster-api
+# The API loads this file using the relative path config/services.yaml.
 COPY --from=builder /src/config/services.yaml /app/config/services.yaml
 
 # Document the port used by the Go HTTP server.

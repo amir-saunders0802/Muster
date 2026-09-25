@@ -33,7 +33,7 @@ curl http://localhost:8080/healthz
 Returns:
 
 ```json
-{"status":"ok"}
+{ "status": "ok" }
 ```
 
 ### List all services
@@ -55,18 +55,34 @@ If the service does not exist, the API returns a `404` response.
 Build the image:
 
 ```bash
-docker build -t muster-api .
+docker build -t muster:local .
 ```
 
-Run the container:
+Run the container locally:
 
 ```bash
-docker run --rm -p 8080:8080 muster-api
+docker run --rm -p 8080:8080 muster:local
+```
+
+For Kind, load the local image before applying the manifests:
+
+```bash
+kind load docker-image muster:local --name <your-cluster-name>
 ```
 
 The application is built using a multi-stage Docker build. The final runtime
 image uses Distroless, contains no shell or Go build tooling, and runs as a
 non-root user.
+
+## Kubernetes note
+
+<!-- subPath mounts do not refresh in place, and the app loads the catalog once at startup. If the ConfigMap is changed, the pod keeps serving the old catalog until it is restarted. -->
+
+When the catalog ConfigMap changes, restart the deployment so the new catalog is loaded:
+
+```bash
+kubectl rollout restart deployment/muster-api
+```
 
 ## Tests
 
