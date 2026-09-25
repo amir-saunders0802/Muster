@@ -41,11 +41,9 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
             failureThreshold: 2
-          # Intentionally wrong on purpose: this route does not exist in the app,
-          # so Kubernetes will restart the pod if the probe fails.
           livenessProbe:
             httpGet:
-              path: /upstream-status
+              path: /healthz
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
