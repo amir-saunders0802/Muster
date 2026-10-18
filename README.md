@@ -76,6 +76,15 @@ non-root user.
 
 ## Kubernetes note
 
+From the project root, render and apply the manifests with:
+
+```bash
+kubectl kustomize --load-restrictor LoadRestrictionsNone k8s | kubectl apply -f -
+```
+
+The Kustomization reads `../config/services.yaml`, outside the `k8s` directory.
+`LoadRestrictionsNone` allows that path, so use this only with trusted manifests.
+
 <!-- subPath mounts do not refresh in place, and the app loads the catalog once at startup. If the ConfigMap is changed, the pod keeps serving the old catalog until it is restarted. -->
 
 When the catalog ConfigMap changes, restart the deployment so the new catalog is loaded:

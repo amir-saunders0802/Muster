@@ -1,0 +1,25 @@
+# Deployment
+replicaCount: 2
+
+# Container image
+image:
+  repository: muster
+  tag: local
+  pullPolicy: IfNotPresent
+
+# Kubernetes Service
+service:
+  type: ClusterIP
+  port: 80
+
+# Port the Muster application listens on inside the container
+containerPort: 8080
+
+# CPU and memory
+resources:
+  requests:
+    cpu: "100m"
+    memory: "64Mi"
+  limits:
+    cpu: "250m"
+    memory: "128Mi"
