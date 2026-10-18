@@ -12,6 +12,9 @@ service:
   type: ClusterIP
   port: 80
 
+# Port the Muster application listens on inside the container
+containerPort: 8080
+
 # CPU and memory
 resources:
   requests:
