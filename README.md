@@ -76,7 +76,7 @@ non-root user.
 
 ## Kubernetes note
 
-From the project root, render and apply the manifests with:
+Render and apply the manifests with:
 
 ```bash
 kubectl kustomize --load-restrictor LoadRestrictionsNone k8s | kubectl apply -f -
