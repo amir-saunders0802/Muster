@@ -1,15 +1,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: muster-api
+  name: {{ .Release.Name }}-muster-api
   labels:
-    app: muster-api
+    app.kubernetes.io/name: muster-api
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+
 spec:
   selector:
-    app: muster-api
+    app.kubernetes.io/name: muster-api
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
   ports:
     - name: http
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.containerPort }}
       protocol: TCP
+
   type: {{ .Values.service.type }}
