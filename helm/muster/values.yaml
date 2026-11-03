@@ -16,6 +16,9 @@ service:
 # Port the Muster application listens on inside the container
 containerPort: 8080
 
+securityContext:
+  runAsUser: 65532
+
 # CPU and memory
 resources:
   requests:
