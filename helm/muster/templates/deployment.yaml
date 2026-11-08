@@ -57,7 +57,7 @@ spec:
               port: {{ .Values.containerPort }}
             initialDelaySeconds: 10
             periodSeconds: 10
-            failureThreshold: 3
+            failureThreshold: 6
       volumes:
         - name: catalog
           configMap:
