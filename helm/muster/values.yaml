@@ -1,5 +1,6 @@
 # Deployment
 replicaCount: 2
+catalogFile: files/services-dev.yaml
 
 # Container image
 image:

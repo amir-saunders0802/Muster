@@ -18,6 +18,8 @@ spec:
         app.kubernetes.io/name: muster-api
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
+      annotations:
+        checksum/catalog: {{ .Files.Get (required "catalogFile must be defined" .Values.catalogFile) | sha256sum | quote }}
     spec:
       containers:
         - name: muster-api
@@ -40,6 +42,10 @@ spec:
               memory: {{ .Values.resources.limits.memory }}
           ports:
             - containerPort: {{ .Values.containerPort }}
+          volumeMounts:
+            - name: catalog
+              mountPath: /app/config/services.yaml
+              subPath: services.yaml
           readinessProbe:
             httpGet:
               path: /healthz
@@ -54,3 +60,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
+      volumes:
+        - name: catalog
+          configMap:
+            name: {{ .Release.Name }}-muster-catalog
