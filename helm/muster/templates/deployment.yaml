@@ -19,7 +19,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
       annotations:
-        checksum/catalog: {{ .Files.Get (required "catalogFile must be defined" .Values.catalogFile) | sha256sum | quote }}
+        checksum/catalog: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       containers:
         - name: muster-api
