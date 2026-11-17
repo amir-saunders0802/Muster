@@ -1,0 +1,18 @@
+services:
+  - name: payments-api
+    owner: payments-team
+    repo: github.com/example/payments-api
+    environment: development
+    tier: 1
+
+  - name: orders-api
+    owner: commerce-team
+    repo: github.com/example/orders-api
+    environment: development
+    tier: 1
+
+  - name: internal-tools
+    owner: developer-experience
+    repo: github.com/example/internal-tools
+    environment: development
+    tier: 3

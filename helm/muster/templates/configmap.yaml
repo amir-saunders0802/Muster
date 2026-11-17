@@ -1,0 +1,16 @@
+{{- $catalogFile := required "catalogFile must be defined and point to a nonempty catalog file in the chart" .Values.catalogFile -}}
+{{- $catalog := .Files.Get $catalogFile -}}
+{{- if eq $catalog "" -}}
+{{- fail (printf "catalogFile %q does not exist in the chart or is empty" $catalogFile) -}}
+{{- end -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-muster-catalog
+  labels:
+    app.kubernetes.io/name: muster-api
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  services.yaml: |
+{{ $catalog | indent 4 }}
