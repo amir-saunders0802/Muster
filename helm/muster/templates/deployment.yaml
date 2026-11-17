@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-muster-catalog
+  name: {{ .Release.Name }}-muster-api
   labels:
     app.kubernetes.io/name: muster-api
     app.kubernetes.io/instance: {{ .Release.Name }}
