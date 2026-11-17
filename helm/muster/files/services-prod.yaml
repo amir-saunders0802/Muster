@@ -14,7 +14,7 @@ services:
   - name: notifications-api
     owner: platform-team
     repo: github.com/example/notifications-api
-    environment: staging
+    environment: production
     tier: 2
 
   - name: reporting-api
@@ -26,5 +26,5 @@ services:
   - name: internal-tools
     owner: developer-experience
     repo: github.com/example/internal-tools
-    environment: development
+    environment: production
     tier: 3

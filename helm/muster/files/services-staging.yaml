@@ -2,13 +2,13 @@ services:
   - name: payments-api
     owner: payments-team
     repo: github.com/example/payments-api
-    environment: production
+    environment: staging
     tier: 1
 
   - name: orders-api
     owner: commerce-team
     repo: github.com/example/orders-api
-    environment: production
+    environment: staging
     tier: 1
 
   - name: notifications-api
@@ -17,14 +17,8 @@ services:
     environment: staging
     tier: 2
 
-  - name: reporting-api
-    owner: analytics-team
-    repo: github.com/example/reporting-api
-    environment: production
-    tier: 2
-
   - name: internal-tools
     owner: developer-experience
     repo: github.com/example/internal-tools
-    environment: development
+    environment: staging
     tier: 3
